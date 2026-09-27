@@ -1,0 +1,134 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------ */
+/*  Brand tokens → generates bg-brand, text-accent, shadow-soft, etc. */
+/* ------------------------------------------------------------------ */
+@theme {
+  --font-sans: 'Montserrat', ui-sans-serif, system-ui, 'Segoe UI', Arial, sans-serif;
+
+  --color-brand: #1b6e73;
+  --color-brand-dark: #124a52;
+  --color-brand-deep: #0b3339;
+  --color-brand-light: #23927a;
+  --color-accent: #f28c28;
+  --color-accent-light: #ffb547;
+  --color-plane: #8e8e8e;
+  --color-surface: #f7fafa;
+  --color-ink: #18494d;
+  --color-gold: #c9a13b;
+  --color-gold-light: #e6c873;
+  --color-whatsapp: #25d366;
+
+  --shadow-soft: 0 12px 32px -14px rgb(18 74 82 / 0.28);
+  --shadow-lift: 0 26px 50px -20px rgb(18 74 82 / 0.45);
+  --shadow-glow: 0 0 40px -6px rgb(242 140 40 / 0.55);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-dash: dash-march 1.2s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes dash-march {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+}
+
+/* Centered page container with responsive gutter */
+@utility wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+  @media (width >= 640px) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 1024px) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Consistent vertical rhythm for sections */
+@utility section-y {
+  padding-block: 4.5rem;
+  @media (width >= 768px) {
+    padding-block: 6.5rem;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+    font-weight: 400;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold tracking-tight text-balance;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: white;
+  }
+
+  img {
+    user-select: none;
+  }
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Hide scrollbars on horizontally scrolling strips while keeping them usable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
