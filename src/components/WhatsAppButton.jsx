@@ -19,13 +19,11 @@ export default function WhatsAppButton() {
     >
       {!reduce &&
         [0, 1].map((ring) => (
-          <motion.span
+          <span
             key={ring}
             aria-hidden="true"
-            className="absolute inset-0 rounded-full bg-whatsapp"
-            initial={{ scale: 1, opacity: 0.55 }}
-            animate={{ scale: 1.9, opacity: 0 }}
-            transition={{ duration: 2, repeat: Infinity, delay: ring, ease: 'easeOut' }}
+            className="absolute inset-0 animate-ring rounded-full bg-whatsapp"
+            style={{ animationDelay: `${ring}s` }}
           />
         ))}
       <WhatsAppIcon size={30} className="relative" />

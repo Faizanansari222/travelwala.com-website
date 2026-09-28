@@ -3,27 +3,28 @@ import { motion } from 'framer-motion'
 import { CalendarDays, MapPin, PlaneTakeoff, Search, Users } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { destinations } from '../../data/destinations'
+import DatePicker from '../ui/DatePicker'
+import DestinationCombobox from '../ui/DestinationCombobox'
+import Select from '../ui/Select'
+import TravellersPicker from '../ui/TravellersPicker'
 
-const ORIGINS = ['Karachi', 'Lahore', 'Islamabad', 'Peshawar', 'Multan']
-
-function Field({ id, label, icon: Icon, children }) {
-  return (
-    <div className="group relative rounded-xl bg-surface px-4 pt-2.5 pb-2 ring-1 ring-brand/10 transition focus-within:bg-white focus-within:ring-2 focus-within:ring-accent">
-      <label htmlFor={id} className="flex items-center gap-1.5 text-[0.7rem] font-bold tracking-wider text-ink/55 uppercase">
-        <Icon size={13} className="text-brand" aria-hidden="true" /> {label}
-      </label>
-      {children}
-    </div>
-  )
-}
-
-const inputClass = 'mt-0.5 w-full bg-transparent text-[0.95rem] font-semibold text-ink focus:outline-none'
+const ORIGINS = [
+  { value: 'KHI', badge: 'KHI', label: 'Karachi', description: 'Jinnah International Airport' },
+  { value: 'LHE', badge: 'LHE', label: 'Lahore', description: 'Allama Iqbal International Airport' },
+  { value: 'ISB', badge: 'ISB', label: 'Islamabad', description: 'Islamabad International Airport' },
+  { value: 'PEW', badge: 'PEW', label: 'Peshawar', description: 'Bacha Khan International Airport' },
+  { value: 'MUX', badge: 'MUX', label: 'Multan', description: 'Multan International Airport' },
+]
 
 export default function SearchCard() {
   const navigate = useNavigate()
-  const today = new Date().toISOString().slice(0, 10)
-  const [form, setForm] = useState({ from: 'Karachi', to: '', date: '', travellers: '2' })
-  const update = (key) => (event) => setForm((f) => ({ ...f, [key]: event.target.value }))
+  const [form, setForm] = useState({
+    from: 'KHI',
+    to: '',
+    date: '',
+    travellers: { adults: 2, children: 0, infants: 0, cabin: 'Economy' },
+  })
+  const set = (key) => (value) => setForm((f) => ({ ...f, [key]: value }))
 
   const onSubmit = (event) => {
     event.preventDefault()
@@ -38,42 +39,12 @@ export default function SearchCard() {
       initial={{ opacity: 0, y: 80 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      className="mt-12 grid gap-3 rounded-2xl bg-white/95 p-3 shadow-lift backdrop-blur md:mt-14 md:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_0.8fr_auto] lg:p-4"
+      className="mt-12 grid gap-3 rounded-2xl bg-white p-3 shadow-lift md:mt-14 md:grid-cols-2 lg:grid-cols-[1fr_1.1fr_1fr_1.1fr_auto] lg:p-4"
     >
-      <Field id="search-from" label="From" icon={PlaneTakeoff}>
-        <select id="search-from" value={form.from} onChange={update('from')} className={inputClass}>
-          {ORIGINS.map((city) => (
-            <option key={city}>{city}</option>
-          ))}
-        </select>
-      </Field>
-      <Field id="search-to" label="To" icon={MapPin}>
-        <input
-          id="search-to"
-          list="search-destinations"
-          value={form.to}
-          onChange={update('to')}
-          placeholder="Where to?"
-          className={`${inputClass} placeholder:font-medium placeholder:text-ink/40`}
-        />
-        <datalist id="search-destinations">
-          {destinations.map((d) => (
-            <option key={d.id} value={d.name} />
-          ))}
-        </datalist>
-      </Field>
-      <Field id="search-date" label="Date" icon={CalendarDays}>
-        <input id="search-date" type="date" min={today} value={form.date} onChange={update('date')} className={inputClass} />
-      </Field>
-      <Field id="search-travellers" label="Travellers" icon={Users}>
-        <select id="search-travellers" value={form.travellers} onChange={update('travellers')} className={inputClass}>
-          {Array.from({ length: 9 }, (_, i) => (
-            <option key={i + 1} value={i + 1}>
-              {i + 1} {i === 0 ? 'Adult' : 'Adults'}
-            </option>
-          ))}
-        </select>
-      </Field>
+      <Select id="search-from" label="From" icon={PlaneTakeoff} options={ORIGINS} value={form.from} onChange={set('from')} />
+      <DestinationCombobox id="search-to" label="To" icon={MapPin} options={destinations} value={form.to} onChange={set('to')} />
+      <DatePicker id="search-date" label="Departure" icon={CalendarDays} value={form.date} onChange={set('date')} />
+      <TravellersPicker id="search-travellers" label="Travellers" icon={Users} value={form.travellers} onChange={set('travellers')} />
       <motion.button
         type="submit"
         whileHover={{ scale: 1.03 }}

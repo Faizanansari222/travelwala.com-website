@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef } from 'react'
-import { animate, motion, useMotionValue, useReducedMotion } from 'framer-motion'
+import { animate, motion, useInView, useMotionValue, useReducedMotion } from 'framer-motion'
 import { usePathFollower } from '../hooks/usePathFollower'
 import { PlaneGlyph } from './Plane'
 
@@ -32,8 +32,12 @@ export default function PathFlight({
 }) {
   const reduce = useReducedMotion()
   const maskId = `trail-${useId().replace(/[^a-zA-Z0-9-_]/g, '')}`
+  const svgRef = useRef(null)
   const pathRef = useRef(null)
   const planeRef = useRef(null)
+  // Looping flights pause while scrolled out of view, so off-screen planes cost nothing.
+  const inView = useInView(svgRef, { margin: '100px 0px' })
+  const shouldRun = !loop || inView
   const onCompleteRef = useRef(onComplete)
   onCompleteRef.current = onComplete
 
@@ -51,6 +55,7 @@ export default function PathFlight({
       onCompleteRef.current?.()
       return
     }
+    if (!shouldRun) return
 
     if (!loop) {
       progress.set(0)
@@ -75,15 +80,18 @@ export default function PathFlight({
       animate(planeOpacity, [0, 1, 1, 0, 0], { ...shared, times: [0, f * 0.06, f * 0.94, f, 1] }),
     ]
     return () => flights.forEach((c) => c.stop())
-  }, [reduce, loop, duration, delay, repeatDelay, hidePlaneWhenReduced, progress, trailOpacity, planeOpacity])
+  }, [reduce, shouldRun, loop, duration, delay, repeatDelay, hidePlaneWhenReduced, progress, trailOpacity, planeOpacity])
 
   const [vx, vy, vw, vh] = viewBox.split(/[\s,]+/).map(Number)
 
   return (
     <svg
+      ref={svgRef}
       viewBox={viewBox}
       preserveAspectRatio={preserveAspectRatio}
       className={className}
+      // Own compositor layer: the moving plane and growing trail repaint only this SVG.
+      style={{ willChange: 'transform' }}
       aria-hidden="true"
       focusable="false"
       fill="none"

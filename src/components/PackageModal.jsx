@@ -101,7 +101,7 @@ function ModalBody({ pkg, onClose }) {
           </div>
         </div>
 
-        <div className="sticky bottom-0 flex flex-col items-start justify-between gap-4 border-t border-brand/10 bg-white/95 px-6 py-4 backdrop-blur sm:flex-row sm:items-center sm:px-8">
+        <div className="sticky bottom-0 flex flex-col items-start justify-between gap-4 border-t border-brand/10 bg-white px-6 py-4 sm:flex-row sm:items-center sm:px-8">
           <p>
             <span className="block text-xs text-ink/55">Per person, starting from</span>
             <span className="text-2xl font-extrabold text-brand">{formatPrice(pkg.price)}</span>

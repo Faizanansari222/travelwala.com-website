@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 import { ShieldCheck } from 'lucide-react'
 import { reasons } from '../../data/services'
 import { scaleIn } from '../../lib/motion'
@@ -21,15 +21,11 @@ function TrustEmblem() {
           <p className="text-sm font-medium text-white/75">of trusted journeys</p>
         </div>
       </div>
-      <motion.div
-        className="absolute inset-[4%]"
-        animate={reduce ? undefined : { rotate: 360 }}
-        transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
-      >
+      <div className={reduce ? 'absolute inset-[4%]' : 'absolute inset-[4%] animate-orbit'}>
         <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white p-2 text-accent shadow-soft">
           <Plane size={30} />
         </span>
-      </motion.div>
+      </div>
     </Reveal>
   )
 }

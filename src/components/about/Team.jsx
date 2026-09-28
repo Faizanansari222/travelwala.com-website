@@ -44,7 +44,7 @@ function TeamCard({ member }) {
             <p className="text-lg font-bold text-white">{member.name}</p>
             <p className="text-sm font-medium text-accent-light">{member.role}</p>
           </div>
-          <span className="absolute top-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-white/20 text-white backdrop-blur" aria-hidden="true">
+          <span className="absolute top-4 right-4 grid h-9 w-9 place-items-center rounded-full bg-black/30 text-white" aria-hidden="true">
             <RotateCw size={16} />
           </span>
         </button>

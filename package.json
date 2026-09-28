@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Travel Wala — Beyond Journeys, Crafting Memories. Animated travel agency website.",
+  "description": "Travel Wala Beyond Journeys, Crafting Memories. Animated travel agency website.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

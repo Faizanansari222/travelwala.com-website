@@ -35,7 +35,7 @@ const PackageCard = forwardRef(function PackageCard({ pkg, onOpen }, ref) {
               </li>
             ))}
           </ul>
-          <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/35 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+          <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1 text-xs font-semibold text-white">
             <Clock3 size={13} aria-hidden="true" /> {pkg.duration}
           </span>
         </div>

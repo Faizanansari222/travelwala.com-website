@@ -21,7 +21,7 @@ export default function MissionVision() {
               <motion.article
                 whileHover={{ scale: 1.03, y: -6 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="relative h-full rounded-2xl bg-white/10 p-8 text-white ring-1 ring-white/15 backdrop-blur-sm transition-colors hover:bg-white/15"
+                className="relative h-full rounded-2xl bg-white/10 p-8 text-white ring-1 ring-white/15 transition-colors hover:bg-white/15"
               >
                 <span className="absolute top-6 right-6 text-5xl font-extrabold text-white/10">0{i + 1}</span>
                 <span className="grid h-14 w-14 place-items-center rounded-2xl bg-accent text-white shadow-glow">

@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'framer-motion'
 import { Moon } from 'lucide-react'
 import { IMAGES } from '../../data/images'
 import { whatsappLink } from '../../data/site'
@@ -50,14 +50,12 @@ export default function UmrahHero() {
         </div>
       </PageHero>
 
-      <motion.div
-        className="pointer-events-none absolute top-24 -right-24 w-[420px] text-gold/30 md:-right-10 md:w-[520px]"
-        animate={reduce ? undefined : { rotate: 360 }}
-        transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
+      <div
+        className={`pointer-events-none absolute top-24 -right-24 w-[420px] text-gold/30 md:-right-10 md:w-[520px] ${reduce ? '' : 'animate-spin-glacial'}`}
         aria-hidden="true"
       >
         <StarOrnament className="h-full w-full" />
-      </motion.div>
+      </div>
       <div className="h-1 bg-linear-to-r from-transparent via-gold to-transparent" aria-hidden="true" />
     </div>
   )

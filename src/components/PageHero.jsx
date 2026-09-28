@@ -15,7 +15,7 @@ export default function PageHero({ title, subtitle, image, eyebrow, crumb, child
 
   return (
     <section className={cn('relative isolate flex min-h-[62svh] items-end overflow-hidden bg-brand-dark pt-36 pb-16 md:min-h-[68svh] md:pb-24', className)}>
-      <motion.div style={{ y: imageY }} className="absolute -inset-y-24 inset-x-0 -z-20">
+      <motion.div style={{ y: imageY }} className="absolute -inset-y-24 inset-x-0 -z-20 will-change-transform">
         <SmartImage src={image} alt="" priority className="h-full w-full" />
       </motion.div>
       <div className={cn('absolute inset-0 -z-10 bg-linear-to-t from-brand-deep/95 via-brand-dark/75 to-brand/40', overlayClassName)} />

@@ -68,19 +68,17 @@ function GlowingFrame({ children }) {
   const reduce = useReducedMotion()
   return (
     <div className="relative h-full">
-      <motion.div
+      {/* Soft gold glow (radial gradient instead of a live blur filter) */}
+      <div
         aria-hidden="true"
-        className="absolute -inset-2 rounded-[2rem] bg-gold/40 blur-2xl"
-        animate={reduce ? undefined : { opacity: [0.35, 0.8, 0.35] }}
-        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        className={`absolute -inset-6 rounded-[2.5rem] bg-[radial-gradient(closest-side,rgb(201_161_59/0.55),transparent)] ${reduce ? 'opacity-50' : 'animate-glow'}`}
       />
       <div className="relative h-full overflow-hidden rounded-3xl p-[3px]">
-        <motion.div
-          aria-hidden="true"
-          className="absolute top-1/2 left-1/2 aspect-square w-[200%] -translate-x-1/2 -translate-y-1/2 bg-[conic-gradient(from_0deg,#C9A13B,#FFB547,#124A52,#23927A,#C9A13B)]"
-          animate={reduce ? undefined : { rotate: 360 }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-        />
+        <div aria-hidden="true" className="absolute top-1/2 left-1/2 aspect-square w-[200%] -translate-x-1/2 -translate-y-1/2">
+          <div
+            className={`h-full w-full bg-[conic-gradient(from_0deg,#C9A13B,#FFB547,#124A52,#23927A,#C9A13B)] ${reduce ? '' : 'animate-spin-slow'}`}
+          />
+        </div>
         <div className="relative h-full">{children}</div>
       </div>
     </div>

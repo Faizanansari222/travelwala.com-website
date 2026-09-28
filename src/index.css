@@ -25,6 +25,49 @@
 
   --animate-marquee: marquee 38s linear infinite;
   --animate-dash: dash-march 1.2s linear infinite;
+  /* Endless decorative loops run as CSS (compositor thread) rather than per-frame JS. */
+  --animate-drift: drift 90s linear infinite;
+  --animate-orbit: turn 14s linear infinite;
+  --animate-spin-slow: turn 6s linear infinite;
+  --animate-spin-glacial: turn 90s linear infinite;
+  --animate-ring: ring 2s ease-out infinite;
+  --animate-glow: glow 3s ease-in-out infinite;
+
+  @keyframes drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes ring {
+    from {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    to {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+
+  @keyframes glow {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
 
   @keyframes marquee {
     from {

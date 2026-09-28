@@ -52,7 +52,7 @@ export default function PackageDetails() {
                 key={item.key}
                 className={
                   isHotels
-                    ? 'rounded-2xl bg-white/10 p-7 ring-1 ring-gold/40 backdrop-blur-sm md:row-span-2 lg:col-start-2 lg:row-start-1'
+                    ? 'rounded-2xl bg-white/10 p-7 ring-1 ring-gold/40 md:row-span-2 lg:col-start-2 lg:row-start-1'
                     : 'rounded-2xl bg-white/5 p-7 ring-1 ring-white/10 transition duration-300 hover:scale-[1.03] hover:bg-white/10'
                 }
               >

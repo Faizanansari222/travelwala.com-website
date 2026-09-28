@@ -64,7 +64,7 @@ export default function Timeline() {
               className="h-full w-full origin-top rounded-full bg-linear-to-b from-brand-light via-brand to-accent"
             />
             {!reduce && (
-              <motion.div style={{ y: planeY }} className="absolute top-0 left-1/2 -translate-x-1/2">
+              <motion.div style={{ y: planeY }} className="absolute top-0 left-1/2 -translate-x-1/2 will-change-transform">
                 <span className="-mt-5 grid h-10 w-10 place-items-center rounded-full bg-white text-accent shadow-soft">
                   <Plane size={24} className="rotate-90" />
                 </span>

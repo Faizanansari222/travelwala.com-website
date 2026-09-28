@@ -47,18 +47,18 @@ export default function OurStory() {
         </div>
 
         <div className="relative mx-auto h-[440px] w-full max-w-lg sm:h-[520px]">
-          <motion.div style={{ y: yMain }} className="absolute inset-y-8 right-0 left-[14%] overflow-hidden rounded-3xl shadow-lift">
+          <motion.div style={{ y: yMain }} className="will-change-transform absolute inset-y-8 right-0 left-[14%] overflow-hidden rounded-3xl shadow-lift">
             <SmartImage src={IMAGES.storyMain} alt="Mountain lake at sunrise" className="h-full w-full" />
           </motion.div>
           <motion.div
             style={{ y: yTop }}
-            className="absolute top-0 left-0 h-40 w-36 overflow-hidden rounded-2xl border-4 border-surface shadow-lift sm:h-48 sm:w-44"
+            className="absolute top-0 left-0 h-40 w-36 will-change-transform overflow-hidden rounded-2xl border-4 border-surface shadow-lift sm:h-48 sm:w-44"
           >
             <SmartImage src={IMAGES.storyTop} alt="Temple gate in Bali" className="h-full w-full" />
           </motion.div>
           <motion.div
             style={{ y: yBottom }}
-            className="absolute bottom-0 left-[4%] h-36 w-48 overflow-hidden rounded-2xl border-4 border-surface shadow-lift sm:h-44 sm:w-56"
+            className="absolute bottom-0 left-[4%] h-36 w-48 will-change-transform overflow-hidden rounded-2xl border-4 border-surface shadow-lift sm:h-44 sm:w-56"
           >
             <SmartImage src={IMAGES.storyBottom} alt="Swiss Alps village" className="h-full w-full" />
           </motion.div>

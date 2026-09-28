@@ -42,6 +42,8 @@ src/
     DestinationCard.jsx, PackageCard.jsx, PackageModal.jsx, Accordion.jsx,
     CtaBanner.jsx, SmartImage.jsx, Seo.jsx, SocialIcons.jsx, SmoothScroll.jsx, Logo.jsx
     home/  about/  packages/  umrah/  contact/   ← page-specific sections
+    ui/               ← Popover, Select, DatePicker, TravellersPicker, DestinationCombobox
+                        (custom, keyboard-accessible form controls used by the search card and contact form)
   pages/              ← Home, About, Packages, Umrah, Contact, NotFound
   data/               ← all dummy content (see below)
   hooks/              ← usePathFollower, useScrollProgress, useLenis, useFocusTrap, …

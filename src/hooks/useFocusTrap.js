@@ -4,12 +4,18 @@ const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 /**
- * Keeps keyboard focus inside `ref` while `active`, closes on Escape,
+ * Keeps keyboard focus inside `ref` while `active`, calls `onEscape` on Escape,
  * and restores focus to the previously focused element afterwards.
+ *
+ * Options:
+ *  - initialFocus():        element to focus first (defaults to the first focusable)
+ *  - shouldRestoreFocus():  return false to skip restoring focus (e.g. after an outside click)
  */
-export function useFocusTrap(ref, active, onEscape) {
+export function useFocusTrap(ref, active, onEscape, options = {}) {
   const escapeRef = useRef(onEscape)
   escapeRef.current = onEscape
+  const optionsRef = useRef(options)
+  optionsRef.current = options
 
   useEffect(() => {
     const node = ref.current
@@ -19,7 +25,7 @@ export function useFocusTrap(ref, active, onEscape) {
     const focusables = () =>
       [...node.querySelectorAll(FOCUSABLE)].filter((el) => el.getClientRects().length > 0)
 
-    const first = focusables()[0]
+    const first = optionsRef.current.initialFocus?.() ?? focusables()[0]
     ;(first ?? node).focus({ preventScroll: true })
 
     const onKeyDown = (event) => {
@@ -49,7 +55,9 @@ export function useFocusTrap(ref, active, onEscape) {
     document.addEventListener('keydown', onKeyDown)
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      previouslyFocused?.focus?.({ preventScroll: true })
+      if (optionsRef.current.shouldRestoreFocus?.() ?? true) {
+        previouslyFocused?.focus?.({ preventScroll: true })
+      }
     }
   }, [ref, active])
 }

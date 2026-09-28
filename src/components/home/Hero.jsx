@@ -25,7 +25,7 @@ export default function Hero() {
       aria-labelledby="hero-title"
       className="relative isolate flex min-h-svh items-center overflow-hidden bg-brand-dark pt-28 pb-32 md:pb-40"
     >
-      <motion.div style={{ y: bgY }} className="absolute -inset-y-32 inset-x-0 -z-30">
+      <motion.div style={{ y: bgY }} className="absolute -inset-y-32 inset-x-0 -z-30 will-change-transform">
         <SmartImage src={IMAGES.heroHome} alt="" priority className="h-full w-full" />
       </motion.div>
       <div className="absolute inset-0 -z-20 bg-linear-to-br from-brand-deep/95 via-brand-dark/80 to-brand-light/45" />
@@ -44,11 +44,11 @@ export default function Hero() {
         trailColor="rgba(255,255,255,0.7)"
       />
 
-      <motion.div style={{ y: contentY }} className="wrap">
+      <motion.div style={{ y: contentY }} className="wrap will-change-transform">
         <motion.div variants={staggerContainer(0.14, 0.25)} initial="hidden" animate="show" className="max-w-3xl">
           <motion.p
             variants={fadeUp}
-            className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold tracking-wide text-white ring-1 ring-white/20 backdrop-blur sm:text-sm"
+            className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold tracking-wide text-white ring-1 ring-white/20 sm:text-sm"
           >
             <ShieldCheck size={16} className="text-accent-light" aria-hidden="true" />
             Licensed agency · 10,000+ happy travellers
@@ -74,7 +74,7 @@ export default function Hero() {
             </Link>
             <Link
               to="/umrah"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 px-7 py-3.5 font-semibold text-white ring-1 ring-white/30 backdrop-blur transition hover:scale-[1.03] hover:bg-white/20"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 px-7 py-3.5 font-semibold text-white ring-1 ring-white/30 transition hover:scale-[1.03] hover:bg-white/20"
             >
               Umrah Packages
             </Link>

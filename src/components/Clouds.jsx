@@ -24,11 +24,10 @@ function CloudLayer({ layer, reduce }) {
   const y = useTransform(scrollY, [0, 900], [0, reduce ? 0 : layer.parallax])
 
   return (
-    <motion.div style={{ y }} className={cn('absolute inset-x-0', layer.band, layer.opacity)}>
-      <motion.div
-        className="flex h-full w-[200%]"
-        animate={reduce ? undefined : { x: ['0%', '-50%'] }}
-        transition={{ duration: layer.duration, repeat: Infinity, ease: 'linear' }}
+    <motion.div style={{ y }} className={cn('absolute inset-x-0 will-change-transform', layer.band, layer.opacity)}>
+      <div
+        className="flex h-full w-[200%] animate-drift motion-reduce:animate-none"
+        style={{ animationDuration: `${layer.duration}s` }}
       >
         {[0, 1].map((copy) => (
           <div key={copy} className="relative h-full w-1/2">
@@ -37,7 +36,7 @@ function CloudLayer({ layer, reduce }) {
             ))}
           </div>
         ))}
-      </motion.div>
+      </div>
     </motion.div>
   )
 }

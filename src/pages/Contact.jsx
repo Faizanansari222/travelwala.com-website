@@ -16,7 +16,7 @@ export default function Contact() {
       />
       <PageHero
         title="Let’s plan your next journey"
-        subtitle="Questions, quotes or just travel dreaming — our team replies within hours, and on WhatsApp even faster."
+        subtitle="Questions, quotes or just travel dreaming our team replies within hours, and on WhatsApp even faster."
         eyebrow="Contact Us"
         crumb="Contact"
         image={IMAGES.heroContact}

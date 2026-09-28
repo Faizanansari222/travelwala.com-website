@@ -29,6 +29,34 @@ function Stars({ rating }) {
   )
 }
 
+function SlideContent({ testimonial }) {
+  return (
+    <>
+      <Stars rating={testimonial.rating} />
+      <blockquote className="mt-5 text-lg leading-relaxed font-medium text-ink md:text-2xl md:leading-relaxed">
+        “{testimonial.quote}”
+      </blockquote>
+      <div className="mt-8 flex items-center gap-4">
+        <img
+          src={testimonial.photo}
+          alt={testimonial.name}
+          loading="lazy"
+          width="56"
+          height="56"
+          draggable="false"
+          className="h-14 w-14 rounded-full object-cover ring-4 ring-accent/20"
+        />
+        <div>
+          <p className="font-bold text-ink">{testimonial.name}</p>
+          <p className="text-sm text-ink/60">
+            {testimonial.location} · {testimonial.trip}
+          </p>
+        </div>
+      </div>
+    </>
+  )
+}
+
 export default function Testimonials() {
   const [[index, direction], setState] = useState([0, 1])
   const [paused, setPaused] = useState(false)
@@ -64,8 +92,15 @@ export default function Testimonials() {
           onFocus={() => setPaused(true)}
           onBlur={() => setPaused(false)}
         >
-          <div className="relative min-h-[380px] overflow-hidden rounded-3xl bg-white p-8 shadow-soft sm:min-h-[320px] md:p-12">
+          <div className="relative grid overflow-hidden rounded-3xl bg-white p-8 shadow-soft md:p-12">
             <Quote size={90} className="absolute -top-2 right-6 text-brand/5" aria-hidden="true" />
+            {/* Invisible copies of every quote share one grid cell, so the card is always as tall
+                as the longest quote — the page never changes height as slides rotate. */}
+            {testimonials.map((t) => (
+              <div key={t.name} className="invisible col-start-1 row-start-1" aria-hidden="true">
+                <SlideContent testimonial={t} />
+              </div>
+            ))}
             <AnimatePresence mode="wait" custom={direction} initial={false}>
               <motion.figure
                 key={index}
@@ -82,32 +117,12 @@ export default function Testimonials() {
                   if (info.offset.x < -80) go(1)
                   else if (info.offset.x > 80) go(-1)
                 }}
-                className="relative cursor-grab active:cursor-grabbing"
+                className="relative col-start-1 row-start-1 cursor-grab active:cursor-grabbing"
                 aria-live={paused ? 'polite' : 'off'}
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${testimonials.length}`}
               >
-                <Stars rating={current.rating} />
-                <blockquote className="mt-5 text-lg leading-relaxed font-medium text-ink md:text-2xl md:leading-relaxed">
-                  “{current.quote}”
-                </blockquote>
-                <figcaption className="mt-8 flex items-center gap-4">
-                  <img
-                    src={current.photo}
-                    alt={current.name}
-                    loading="lazy"
-                    width="56"
-                    height="56"
-                    draggable="false"
-                    className="h-14 w-14 rounded-full object-cover ring-4 ring-accent/20"
-                  />
-                  <div>
-                    <p className="font-bold text-ink">{current.name}</p>
-                    <p className="text-sm text-ink/60">
-                      {current.location} · {current.trip}
-                    </p>
-                  </div>
-                </figcaption>
+                <SlideContent testimonial={current} />
               </motion.figure>
             </AnimatePresence>
           </div>

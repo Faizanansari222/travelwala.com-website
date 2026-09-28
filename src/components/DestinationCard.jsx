@@ -29,7 +29,7 @@ export default function DestinationCard({ destination }) {
   return (
     <MotionLink
       to={`/packages`}
-      aria-label={`${destination.name}, ${destination.country} — from ${formatPrice(destination.price)}`}
+      aria-label={`${destination.name}, ${destination.country} from ${formatPrice(destination.price)}`}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
       style={{ rotateX, rotateY, transformPerspective: 1000 }}
@@ -45,7 +45,7 @@ export default function DestinationCard({ destination }) {
       />
       <div className="absolute inset-0 bg-linear-to-t from-brand-deep/95 via-brand-deep/25 to-transparent" />
 
-      <span className="absolute top-4 left-4 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
+      <span className="absolute top-4 left-4 rounded-full bg-black/30 px-3 py-1 text-xs font-semibold text-white">
         {destination.tag}
       </span>
       <span className="absolute top-4 right-4 rounded-2xl bg-accent px-3 py-2 text-right text-white shadow-lg shadow-accent/40">

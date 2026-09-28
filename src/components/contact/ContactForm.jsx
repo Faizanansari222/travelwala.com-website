@@ -1,12 +1,18 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { LoaderCircle, Send } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { LoaderCircle, MessageCircle, Send } from 'lucide-react'
+import { Controller, useForm } from 'react-hook-form'
 import { services } from '../../data/services'
+import Select from '../ui/Select'
 import FloatingField from './FloatingField'
 import PaperPlaneSuccess from './PaperPlaneSuccess'
 
-const SERVICE_OPTIONS = [...services.map((s) => s.title), 'Something else']
+const SERVICE_OPTIONS = [
+  ...services.map((s) => ({ value: s.title, label: s.title, icon: s.icon })),
+  { value: 'Something else', label: 'Something else', icon: MessageCircle },
+]
+
+const DEFAULT_VALUES = { name: '', email: '', phone: '', service: '', message: '' }
 
 // Simulated network request — replace with a real API call / email service later.
 const fakeSend = () => new Promise((resolve) => setTimeout(resolve, 1200))
@@ -15,10 +21,11 @@ export default function ContactForm() {
   const [sentTo, setSentTo] = useState(null)
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm({ mode: 'onTouched' })
+  } = useForm({ mode: 'onTouched', defaultValues: DEFAULT_VALUES })
 
   const onSubmit = async (data) => {
     await fakeSend(data)
@@ -81,13 +88,24 @@ export default function ContactForm() {
                   pattern: { value: /^\+?[\d\s-]{10,16}$/, message: 'Enter a valid number, e.g. +92 300 0000000.' },
                 })}
               />
-              <FloatingField
-                id="contact-service"
-                label="Service"
-                as="select"
-                options={SERVICE_OPTIONS}
-                error={errors.service}
-                {...register('service', { required: 'Please choose a service.' })}
+              <Controller
+                name="service"
+                control={control}
+                rules={{ required: 'Please choose a service.' }}
+                render={({ field, fieldState }) => (
+                  <Select
+                    id="contact-service"
+                    label="Service"
+                    variant="form"
+                    placeholder="Choose a service"
+                    options={SERVICE_OPTIONS}
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    ref={field.ref}
+                    error={fieldState.error}
+                  />
+                )}
               />
               <FloatingField
                 id="contact-message"

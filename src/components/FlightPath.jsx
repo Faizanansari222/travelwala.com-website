@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring } from 'framer-motion'
 import { MapPin } from 'lucide-react'
 import { useElementSize } from '../hooks/useElementSize'
@@ -41,7 +41,6 @@ export default function FlightPath({ stops, children }) {
   const wrapperRef = useRef(null)
   const pathRef = useRef(null)
   const planeRef = useRef(null)
-  const maskId = `route-${useId().replace(/[^a-zA-Z0-9-_]/g, '')}`
   const reduce = useReducedMotion()
   const enabled = useMediaQuery('(min-width: 768px)')
   const { width, height } = useElementSize(wrapperRef)
@@ -50,7 +49,18 @@ export default function FlightPath({ stops, children }) {
 
   const { scrollYProgress } = useScroll({ target: wrapperRef, offset: ['start 55%', 'end 55%'] })
   const progress = useSpring(scrollYProgress, { stiffness: 110, damping: 26, mass: 0.35, restDelta: 0.0005 })
-  usePathFollower(pathRef, planeRef, progress, route?.d)
+  // The flown (orange) part of the route is revealed down to the plane's height using two
+  // opposing GPU transforms: the clip box slides down while the SVG inside slides up by the
+  // same amount. Works because the route only ever travels downwards, and — unlike an SVG
+  // mask — never repaints the page-tall SVG.
+  const clipRef = useRef(null)
+  const flownRef = useRef(null)
+  const revealTo = (y) => {
+    if (!clipRef.current || !flownRef.current) return
+    clipRef.current.style.transform = `translate3d(0, ${y - height}px, 0)`
+    flownRef.current.style.transform = `translate3d(0, ${height - y}px, 0)`
+  }
+  usePathFollower(pathRef, planeRef, progress, route?.d, 'css', reduce ? undefined : revealTo)
 
   const [reached, setReached] = useState(0)
   useMotionValueEvent(progress, 'change', (value) => {
@@ -63,30 +73,29 @@ export default function FlightPath({ stops, children }) {
   return (
     <div ref={wrapperRef} className="relative">
       {active && (
-        <svg
-          className="pointer-events-none absolute inset-0 z-0"
-          width={width}
-          height={height}
-          viewBox={`0 0 ${width} ${height}`}
-          aria-hidden="true"
-          focusable="false"
-          fill="none"
-        >
-          <defs>
-            <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width={width} height={height}>
-              <motion.path d={route.d} stroke="#fff" strokeWidth="10" style={{ pathLength: showAll ? 1 : progress }} />
-            </mask>
-          </defs>
-          <path d={route.d} stroke="var(--color-brand)" strokeOpacity="0.22" strokeWidth="3" strokeDasharray="1 11" strokeLinecap="round" />
-          <path
-            d={route.d}
-            stroke="var(--color-accent)"
-            strokeWidth="3.5"
-            strokeDasharray="1 11"
-            strokeLinecap="round"
-            mask={`url(#${maskId})`}
-          />
-        </svg>
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+          <svg className="absolute inset-0" width={width} height={height} viewBox={`0 0 ${width} ${height}`} focusable="false" fill="none">
+            <path ref={pathRef} d={route.d} stroke="var(--color-brand)" strokeOpacity="0.22" strokeWidth="3" strokeDasharray="1 11" strokeLinecap="round" />
+          </svg>
+          <div
+            ref={clipRef}
+            className="absolute inset-0 overflow-hidden will-change-transform"
+            style={{ transform: showAll ? 'none' : `translate3d(0, ${-height}px, 0)` }}
+          >
+            <svg
+              ref={flownRef}
+              className="absolute inset-0 will-change-transform"
+              style={{ transform: showAll ? 'none' : `translate3d(0, ${height}px, 0)` }}
+              width={width}
+              height={height}
+              viewBox={`0 0 ${width} ${height}`}
+              focusable="false"
+              fill="none"
+            >
+              <path d={route.d} stroke="var(--color-accent)" strokeWidth="3.5" strokeDasharray="1 11" strokeLinecap="round" />
+            </svg>
+          </div>
+        </div>
       )}
 
       <div className="relative z-10">{children}</div>
@@ -121,12 +130,12 @@ export default function FlightPath({ stops, children }) {
           })}
 
           {!reduce && (
-            <svg className="absolute inset-0 overflow-visible" width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-              <path ref={pathRef} d={route.d} fill="none" stroke="none" />
-              <g ref={planeRef}>
+            // A small GPU layer moved with translate3d — no page repaint while scrolling.
+            <div ref={planeRef} className="absolute top-0 left-0 h-0 w-0 origin-top-left will-change-transform">
+              <svg width="48" height="48" viewBox="-24 -24 48 48" className="-translate-x-1/2 -translate-y-1/2 overflow-visible">
                 <PlaneGlyph size={30} color="var(--color-brand)" badge="#ffffff" />
-              </g>
-            </svg>
+              </svg>
+            </div>
           )}
         </div>
       )}

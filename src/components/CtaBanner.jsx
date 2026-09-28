@@ -10,7 +10,7 @@ const CTA_ROUTE = 'M-60 250 C 180 250, 300 60, 600 110 S 1000 40, 1260 20'
 
 export default function CtaBanner({
   title = 'Ready for your next journey?',
-  text = 'Tell us where your heart wants to go — we will handle the flights, hotels, visas and every little detail in between.',
+  text = 'Tell us where your heart wants to go we will handle the flights, hotels, visas and every little detail in between.',
 }) {
   return (
     <section className="wrap pb-20 md:pb-28" aria-labelledby="cta-title">

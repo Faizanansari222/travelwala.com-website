@@ -17,7 +17,7 @@ export default function Logo({ variant = 'light', className, asLink = true, onCl
   )
   if (!asLink) return img
   return (
-    <Link to="/" onClick={onClick} aria-label="Travel Wala — home" className="inline-flex shrink-0 rounded-lg">
+    <Link to="/" onClick={onClick} aria-label="Travel Wala home" className="inline-flex shrink-0 rounded-lg">
       {img}
     </Link>
   )
